@@ -1,0 +1,9 @@
+{% if drawing_list %}
+    <ul>
+    {% for drawing in drawing_list %}
+        <li><a href="{% url 'palette:detail' drawing.id %}">{{ drawing.subject }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>작품이 없습니다.</p>
+{% endif %}

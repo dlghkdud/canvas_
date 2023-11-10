@@ -1,0 +1,22 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+<h1>{{ drawing.subject }}</h1>
+<div>
+    {{ drawing.content }}
+    
+</div>
+
+<h5>{{ drawing.comment_set.count }}</h5>
+<div>
+    <ul>
+    {% for comment in drawing.comment_set.all %}
+        <li>{{ comment.content }}</li>
+    {% endfor %}
+    </ul>
+</div>
+
+<form action = "{% url 'palette:comment_create' drawing.id %}" method="post">
+{% csrf_token %}
+<textarea name="content" id="content" rows="15"></textarea>
+<input type="submit" value="comment">
+</form>
