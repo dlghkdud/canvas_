@@ -1,8 +1,10 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Drawing(models.Model):
     subject = models.CharField(max_length=200)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField(default='')
     imgfile = models.ImageField(null=True, upload_to="", blank=True)
     uploadedFile = models.FileField(upload_to="result/")
@@ -12,6 +14,7 @@ class Drawing(models.Model):
         return self.subject
 
 class Comment(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     drawing = models.ForeignKey(Drawing, on_delete=models.CASCADE)
     content = models.TextField()
     create_date = models.DateTimeField()
