@@ -1,7 +1,7 @@
 {% block content %}
 <div class="container">
     <h5>질문등록</h5>
-    <form method="post">
+    <form method="post", action="{% url 'index' %}" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">저장하기</button>
