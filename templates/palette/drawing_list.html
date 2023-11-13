@@ -24,7 +24,7 @@
         
         <div>
             <!-- https://zenna9.tistory.com/36 -->
-            <img src="{{ drawing.imgfile }}">
+            <a href="/palette/{{ drawing.id }}/"><img src="{{ drawing.imgfile }}"></a>
         </div>
         <div>
             {{ drawing.content }}
@@ -37,5 +37,5 @@
 </div>
 
 <div>
-    <a href="#">게시글 등록</a>
+    <a href="{% url 'palette:drawing_create' %}">게시글 등록</a>
 </div>
