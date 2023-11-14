@@ -25,7 +25,7 @@ def drawing_create(request):
         form = DrawingForm(request.POST)
         if form.is_valid():
             drawing = form.save(commit=False)
-            imgfile = request.FILES["imgfile"]
+            # imgfile = request.FILES["imgfile"]
             drawing.create_date = timezone.now()
             drawing.save()
             return redirect('palette:index')
