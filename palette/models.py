@@ -9,6 +9,7 @@ class Drawing(models.Model):
     imgfile = models.ImageField(null=True, upload_to="", blank=True)
     uploadedFile = models.FileField(upload_to="result/")
     create_date = models.DateTimeField()
+    modify_date = models.DateTimeField(null=True, blank=True)
     
     def __str__(self):
         return self.subject
@@ -18,3 +19,4 @@ class Comment(models.Model):
     drawing = models.ForeignKey(Drawing, on_delete=models.CASCADE)
     content = models.TextField()
     create_date = models.DateTimeField()
+    modify_date = models.DateTimeField(null=True, blank=True)

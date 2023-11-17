@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from .models import Drawing, Comment
 from .forms import DrawingForm
+from django.contrib import messages
 
 def index(request):
     drawing_list = Drawing.objects.order_by('-create_date')
@@ -34,7 +35,23 @@ def drawing_create(request):
     context = {'form':form}
     return render(request, 'palette/drawing_form.html', context)
 
-
+@login_required(login_url='common:login')
+def drawing_modify(request, drawing_id):
+    drawing = get_object_or_404(Drawing, pk=drawing_id)
+    if request.user != drawing.author:
+        messages.error(request, '수정권한이 없습니다')
+        return redirect('palette:detail', drawing_id=drawing.id)
+    if request.method == "POST":
+        form = DrawingForm(request.POST, instance=drawing)
+        if form.is_valid():
+            drawing = form.save(commit=False)
+            drawing.modify_date = timezone.now()  # 수정일시 저장
+            drawing.save()
+            return redirect('palette:detail', question_id=drawing.id)
+    else:
+        form = DrawingForm(instance=drawing)
+    context = {'form': form}
+    return render(request, 'palette/drawing_form.html', context)
 
 # https://eveningdev.tistory.com/47
 # https://hyundy.tistory.com/11
