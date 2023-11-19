@@ -20,3 +20,7 @@ class Comment(models.Model):
     content = models.TextField()
     create_date = models.DateTimeField()
     modify_date = models.DateTimeField(null=True, blank=True)
+
+class Document(models.Model):
+    uploadedFile = models.FileField(upload_to="result/")
+    dateTimeOfUpload = models.DateTimeField(auto_now=True)

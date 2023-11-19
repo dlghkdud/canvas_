@@ -25,6 +25,7 @@ def comment_create(request, drawing_id):
 def drawing_create(request):
     if request.method == 'POST':
         form = DrawingForm(request.POST)
+        uploadedFile = request.POST["fileSubject"]
         if form.is_valid():
             drawing = form.save(commit=False)
             # imgfile = request.FILES["imgfile"]
@@ -107,6 +108,7 @@ def comment_delete(request, comment_id):
     else:
         comment.delete()
     return redirect('palette:detail', drawing_id=comment.drawing.id)
+
 
 # https://eveningdev.tistory.com/47
 # https://hyundy.tistory.com/11
