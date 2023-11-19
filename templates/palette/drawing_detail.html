@@ -5,7 +5,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
 <style>
+    .top{
+        display: flex;
+        flex: auto;
+        justify-content: space-between;
+    }
     .img-wrapper {
+        display: flex;
         position: relative;
         width: 400px;
         height: 400px;
@@ -16,35 +22,96 @@
     .img-wrapper img {
         border-radius: 5%;
         position: absolute;
-        top: 0;
-        left: 0;
         transform: translate(50, 50);
         width: 100%;
         height: 100%;
         object-fit: cover;
         margin: auto;
+        border: 1px solid black;
+        border-radius: 5%;
     }
     .intro{
         position: relative;
-        margin-top:-420px;
-        margin-left: 450px;
         font-family: 'Indie Flower', cursive;
         color:white;
         -webkit-text-stroke: 1px black;
+        margin-left: -27vh;
     }
     .subject{
+        margin-top: 10px;
         font-size: 97px;
     }
     .content{
         position: relative;
-        margin-top: -20px;
         font-size: 40px;
-        padding-right: 670px;
+        width: 90vh;
     }
+    .drawing_info{
+        flex-direction: column;
+        display: flex;
+        font-family: 'Indie Flower', cursive;
+        color:white;
+        -webkit-text-stroke: 1px black;
+        align-items: flex-end;
+        position:relative;
+        text-align: right;
+        font-size: 38px;
+    }
+    .info{
+        display: flex;
+        align-items: flex-end;
+    }
+
+    .button_modi{
+        display: flex;
+        margin-top: 35px;
+        position: relative;
+        justify-content:right;
+
+    }
+    .btn_mod{
+        height: 50px;
+        width: 100px;
+        margin-right: 10px;
+        text-align: center;
+        text-decoration: none;
+        border: 1px solid black;
+        background-color: #D8EAF6;
+        border-radius: 15px;
+        font-family: 'Indie Flower', cursive;
+        font-size: 30px;
+        color:white;
+        -webkit-text-stroke: 1px black;
+    }
+
+    .btn_del{
+        height: 45px;
+        width: 90px;
+        text-align: center;
+        text-decoration: none;
+        border: 1px solid black;
+        background-color: #D8EAF6;
+        border-radius: 15px;
+        font-family: 'Indie Flower', cursive;
+        font-size: 30px;
+        color:white;
+        padding-top: 5px;
+        -webkit-text-stroke: 1px black;
+    }
+    .right{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    /* https://narup.tistory.com/210 */
+    
     .sep{
         position: relative;
-        margin-top: 16px;
+        top: 5px;
         width: 98.5%;
+    }
+    .bot{
+        display: block;
     }
     .comment{
         width: 89.5%;
@@ -75,6 +142,8 @@
         padding-top: 5px;
     }
     .comment_box{
+        display: flex;
+        flex-direction: column;
         position: relative;
         margin-left: 15px;
         width: 98.5%;
@@ -86,69 +155,149 @@
         border: 1px solid black;
         padding-left: 10px;
     }
-    .comment_user{
+    .btn_comm{
+        display: flex;
         position: relative;
+        /* margin-top: -3.5vh; */
+        /* margin-left: 182vh; */
+    }
+    .mod_btn{
+        position: relative;
+        margin-right: 0.5vh;
+        display: block;
+        width: 90px;
+        height: 35px;
+        text-align: center;
+        text-decoration: none;
+        border: 1px solid black;
+        background-color: #D8EAF6;
+        border-radius: 15px;
+        font-family: 'Indie Flower', cursive;
+        font-size: 23px;
+        color:white;
+        -webkit-text-stroke: 1px black;
+    }
+    .delete{
+        width: 80px;
+        text-align: center;
+        text-decoration: none;
+        border: 1px solid black;
+        background-color: #D8EAF6;
+        border-radius: 15px;
+        font-family: 'Indie Flower', cursive;
+        font-size: 23px;
+        color:white;
+        -webkit-text-stroke: 1px black;
+        padding-top: 3px;
+        height: 33px;
+    }
+    .comment_user{
+        display: flex;
         font-size: 27px;
     }
     .comment_content{
-        position: relative;
+        display: flex;
         font-size: 33px;
-        margin-top: -15px;
     }
     .comment_date{
+        display: flex;
         position: relative;
         font-size: 25px;
-        margin-top: -20px;
-        padding-left: 86%;
+        padding-left: 175vh;
+        margin-top: -3vh;
+        /* margin-top: -20px;
+        padding-left: 86%; */
     }
-    .drawing_info{
-        position:relative;
-        text-align: right;
-        font-size: 30px;
-        margin-right: 200px;
-        margin-top: 45px;
-    }
+    
 </style>
 
-<div>
+<div class="top">
     <div class="img-wrapper">
         <img src="../../media/{{ drawing.imgfile }}">
     </div>
 
     <div class='intro'>
-        <div class='subject'>{{ drawing.subject }}</div>
-
-        {% if request.user == drawing.author %}
-            <a href="{% url 'palette:drawing_modify' drawing.id  %}" class="btn btn-sm btn-outline-secondary">수정</a>
+        {% if messages %}
+        <div class="alert alert-danger my-3" role="alert">
+        {% for message in messages %}
+            <strong>{{ message.tags }}</strong>
+            <ul><li>{{ message.message }}</li></ul>
+        {% endfor %}
+        </div>
         {% endif %}
+        <div class='subject'>{{ drawing.subject }}</div>
         
         <div class='content'>
             {{ drawing.content }}
         </div>
+    </div>
 
-        <div class='drawing_info'>
-            <div class='drawing_user'>{{ drawing.author.username }}</div>
-            <div class='drawing_date'>{{ drawing.create_date }}</div>
+    <div class="right">
+        <div class="button_modi">
+            {% if request.user == drawing.author %}
+            <a href="{% url 'palette:drawing_modify' drawing.id %}" 
+            class="btn_mod">modify</a>
+            <a href="javascript:void(0)" class="btn_del"
+            data-uri="{% url 'palette:drawing_delete' drawing.id  %}">delete</a>
+            {% endif %}
+        </div>
+    
+        <div class="info">
+            <div class='drawing_info'>
+                <div class='drawing_user'>{{ drawing.author.username }}</div>
+                <div class='drawing_date'>{{ drawing.create_date }}</div>
+            </div>
         </div>
     </div>
+    
+    
 </div>
 
 <hr class='sep'>
 
 
+<div class="bot">
+    <form action = "{% url 'palette:comment_create' drawing.id %}" method="post">
+        {% csrf_token %}
+        <textarea name="content" id="content" rows="15" placeholder="Please enter a comment" class='comment'></textarea>
+        <input type="submit" value="comment" class='comment_submit'>
+    </form>
+        
+        {% for comment in drawing.comment_set.all %}
+            <div class='comment_box'>
+                
+                <div class="btn_comm">
+                    <div class='comment_user'>{{ comment.author.username }}</div>
+                    <div class="my-3">
+                        {% if request.user == comment.author %}
+                        <a href="{% url 'palette:comment_modify' comment.id  %}" 
+                        class="mod_btn">modify</a>
+                        {% endif %}
+                    </div>
+                    {% if request.user == comment.author %}
+                    <a href="#" class="delete btn btn-sm btn-outline-secondary "
+                        data-uri="{% url 'palette:comment_delete' comment.id  %}">delete</a>
+                    {% endif %}
+                </div>
+                
+                <div class='comment_content'>{{ comment.content }}</div>
+                <div class='comment_date'>{{ comment.create_date }}</div>
+            </div>
+        {% endfor %}
+</div>
 
-<form action = "{% url 'palette:comment_create' drawing.id %}" method="post">
-{% csrf_token %}
-<textarea name="content" id="content" rows="15" placeholder="Please enter a comment" class='comment'></textarea>
-<input type="submit" value="comment" class='comment_submit'>
-</form>
 
-{% for comment in drawing.comment_set.all %}
-    <div class='comment_box'>
-        <div class='comment_user'>{{ comment.author.username }}</div>
-        <div class='comment_content'>{{ comment.content }}</div>
-        <div class='comment_date'>{{ comment.create_date }}</div>
-    </div>
-{% endfor %}
+{% endblock %}
 
+{% block script %}
+<script type='text/javascript'>
+const delete_elements = document.getElementsByClassName("delete");
+Array.from(delete_elements).forEach(function(element) {
+    element.addEventListener('click', function() {
+        if(confirm("정말로 삭제하시겠습니까?")) {
+            location.href = this.dataset.uri;
+        };
+    });
+});
+</script>
 {% endblock %}
