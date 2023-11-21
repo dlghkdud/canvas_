@@ -109,6 +109,11 @@ def comment_delete(request, comment_id):
         comment.delete()
     return redirect('palette:detail', drawing_id=comment.drawing.id)
 
+@login_required(login_url='common:login')
+def drawing_vote(request, drawing_id):
+    drawing = get_object_or_404(Drawing, pk=drawing_id)
+    drawing.voter.add(request.user)
+    return redirect('palette:detail', drawing_id=drawing.id)
 
 # https://eveningdev.tistory.com/47
 # https://hyundy.tistory.com/11

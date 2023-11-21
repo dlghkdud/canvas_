@@ -2,12 +2,15 @@
 {% block content %}
 <style>
     #imgcontain{
+        z-index: 1;
         margin-top: 20px;
         display: grid;
         grid-template-columns: repeat(5,1fr);
         width: 100%;
     }
     .img-wrapper {
+        z-index: 1;
+        display: flex;
         position: relative;
         margin: 0 auto;
         width: 300px;
@@ -16,6 +19,7 @@
         border-radius: 5%;
     }
     .img-wrapper img {
+        z-index: 1;
         border-radius: 5%;
         position: absolute;
         top: 0;
@@ -26,20 +30,64 @@
         object-fit: cover;
         margin: auto;
     }
+    .list{
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    .recom{
+        z-index: 1;
+        font-family: 'Indie Flower', cursive;
+        font-size: 15px;
+        color:white;
+        -webkit-text-stroke: 1px black;
+        display: flex;
+        margin-left: 30.5vh;
+        position: relative;
+        margin-top: 0.3vh;
+        margin-bottom: 1vh;
+    }
+    .recommend{
+        z-index: 1;
+        position: relative;
+        text-decoration: none;
+
+    }
+    .drawing{
+        z-index: 2;
+        position: relative;
+        left: 93%;
+        width: 63px;
+        height: 63px;
+        top: 90%;
+        background-color: #D8EAF6;
+        border: 1px solid black;
+        border-radius: 15%;
+        align-items: center;
+        padding-left: 1vh;
+        padding-top: 1vh;
+    }
+    .drawing_img{
+        width: 60px;
+    }
 </style>
 
 <div id="imgcontain">
 
     {% if drawing_list %}
     {% for drawing in drawing_list %}
-    <div>
+    <div class="list">
         
         <div class="img-wrapper">
             <!-- https://zenna9.tistory.com/36 -->
             <a href="/palette/{{ drawing.id }}/"><img src="../media/{{ drawing.imgfile }}"></a>
         </div>
-        <div>
-            {{ drawing.subject }}
+        <div class="recom">
+            <a href="javascript:void(0)" data-uri="{% url 'palette:drawing_vote' drawing.id  %}"
+               class="recommend btn btn-sm btn-outline-secondary">♡
+               <span class="badge rounded-pill bg-success">{{drawing.voter.count}}</span>
+            </a>
+            </a>
         </div>
     </div>
     {% endfor %}
@@ -48,7 +96,20 @@
     {% endif %}
 </div>
 
-<div>
-    <a href="{% url 'palette:drawing_create' %}">게시글 등록</a>
+<div class="drawing">
+    <a href="{% url 'palette:drawing_create' %}"><img class="drawing_img" src="/static/image/drawing.png"></a>
 </div>
+
+<script type='text/javascript'>
+    const recommend_elements = document.getElementsByClassName("recommend");
+    Array.from(recommend_elements).forEach(function(element) {
+        element.addEventListener('click', function() {
+            // 묻는거없이 상세페이지로 이동하지 않고 좋아요만 누를수있게 수정
+            if(confirm("정말로 추천하시겠습니까?")) {
+                location.href = this.dataset.uri;
+            };
+        });
+    });
+</script>
+
 {% endblock %}
