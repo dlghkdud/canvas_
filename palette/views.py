@@ -113,8 +113,8 @@ def comment_delete(request, comment_id):
 def drawing_vote(request, drawing_id):
     drawing = get_object_or_404(Drawing, pk=drawing_id)
     drawing.voter.add(request.user)
-    #경로 수정 
-    return redirect('palette/drawing_list.html', drawing_id=drawing.id)
+    # 경로 수정
+    return redirect('palette:index')
 
 # https://eveningdev.tistory.com/47
 # https://hyundy.tistory.com/11
