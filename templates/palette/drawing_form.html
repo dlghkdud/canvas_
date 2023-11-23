@@ -1,11 +1,35 @@
 {% extends 'base.html' %}
 {% block content %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
+<style>
+    /* p:nth-child(2){
+        font-family: 'Indie Flower', cursive;
+        color: white;
+        -webkit-text-stroke: 1px black;
+        margin-top: 10px;
+        font-size: 80px;
+    }
+    p:nth-child(3){
+        font-family: 'Indie Flower', cursive;
+        color: white;
+        -webkit-text-stroke: 1px black;
+        font-size: 80px;
+        margin-top: -5vh;
+    } */
+    .container{
+        position: relative;
+        display: flex;
+        margin-left: 1vw;
+        margin-top:1vh;
+    }
+</style>
 <div class="container">
-    <h5>질문등록</h5>
-    <form method="post", action="{% url 'index' %}" enctype="multipart/form-data">
+    <form method="post", action="{% url 'palette:drawing_create' %}" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">저장하기</button>
+        <button type="submit">drawing</button>
     </form>
 </div>
 {% endblock %}

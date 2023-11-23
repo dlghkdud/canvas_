@@ -5,6 +5,10 @@ from .models import Drawing, Comment
 from .forms import DrawingForm, CommentForm
 from django.contrib import messages
 
+import os
+from django.conf import settings
+from django.http import HttpResponse
+
 def index(request):
     drawing_list = Drawing.objects.order_by('-create_date')
     context = {'drawing_list': drawing_list}
@@ -22,37 +26,23 @@ def comment_create(request, drawing_id):
     comment.save()
     return redirect('palette:detail', drawing_id=drawing.id)
 
+@ login_required
 def drawing_create(request):
     if request.method == 'POST':
-        form = DrawingForm(request.POST)
-        uploadedFile = request.POST["fileSubject"]
+        form = DrawingForm(request.POST, request.FILES) # request.FILES
         if form.is_valid():
             drawing = form.save(commit=False)
-            # imgfile = request.FILES["imgfile"]
+            drawing.author = request.user 
             drawing.create_date = timezone.now()
+            if 'imgfile' in request.FILES: #img파일 처리
+                drawing.imgfile = request.FILES['imgfile']
+            if 'uploadedFile' in request.FILES: #업로드 파일처리
+                drawing.uploadedFile = request.FILES['uploadedFile']
             drawing.save()
             return redirect('palette:index')
     else:
         form = DrawingForm()
     context = {'form':form}
-    return render(request, 'palette/drawing_form.html', context)
-
-@login_required(login_url='common:login')
-def drawing_modify(request, drawing_id):
-    drawing = get_object_or_404(Drawing, pk=drawing_id)
-    if request.user != drawing.author:
-        messages.error(request, '수정권한이 없습니다')
-        return redirect('palette:detail', drawing_id=drawing.id)
-    if request.method == "POST":
-        form = DrawingForm(request.POST, instance=drawing)
-        if form.is_valid():
-            drawing = form.save(commit=False)
-            drawing.modify_date = timezone.now()  # 수정일시 저장
-            drawing.save()
-            return redirect('palette:detail', question_id=drawing.id)
-    else:
-        form = DrawingForm(instance=drawing)
-    context = {'form': form}
     return render(request, 'palette/drawing_form.html', context)
 
 @login_required(login_url='common:login')
@@ -115,6 +105,17 @@ def drawing_vote(request, drawing_id):
     drawing.voter.add(request.user)
     # 경로 수정
     return redirect('palette:index')
+
+def file_download(request, id):
+    drawing = Drawing.objects.get(id=id)
+    file_path = drawing.uploadedFile.path
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as fh:
+            response = HttpResponse(fh.read(), content_type="application/force-download")
+            response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+            return response
+    raise Http404
+
 
 # https://eveningdev.tistory.com/47
 # https://hyundy.tistory.com/11

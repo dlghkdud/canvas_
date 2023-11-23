@@ -14,4 +14,5 @@ urlpatterns = [
     path('comment/modify/<int:comment_id>/', views.comment_modify, name='comment_modify'),
     path('comment/delete/<int:comment_id>/', views.comment_delete, name='comment_delete'),
     path('drawing/vote/<int:drawing_id>/', views.drawing_vote, name='drawing_vote'),
+    path('drawing/<int:id>/download/', views.file_download, name='file_download'),
 ]
