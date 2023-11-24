@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
+<style>
+    /* p:nth-child(2){
+        font-family: 'Indie Flower', cursive;
+        color: white;
+        -webkit-text-stroke: 1px black;
+        margin-top: 10px;
+        font-size: 80px;
+    }
+    p:nth-child(3){
+        font-family: 'Indie Flower', cursive;
+        color: white;
+        -webkit-text-stroke: 1px black;
+        font-size: 80px;
+        margin-top: -5vh;
+    } */
+    .container{
+        position: relative;
+        display: flex;
+        margin-left: 1vw;
+        margin-top:4%;
+    }
+</style>
+<div class="container">
+    <!-- <form method="post", action="{% url 'palette:drawing_create' %}" enctype="multipart/form-data"> -->
+        
+        <!-- 게시글 수정  -->
+        <!-- action 속성을 URL로 설정하는 대신, 폼을 렌더링할 때 form 객체를 사용하여 필드를 표시하고, method="post"를 통해 데이터를 전송하도록 했습니다. form 객체는 이미 Drawing 모델과 관련된 것으로 설정되었기 때문에, 이 폼을 통해 데이터를 수정할 수 있게 됩니다. -->
+        <form method="post", enctype="multipart/form-data">   
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">drawing</button>
+    </form>
+</div>
+{% endblock %}
+
