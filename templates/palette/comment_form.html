@@ -1,8 +1,16 @@
 {% extends 'base.html' %}
 {% block content %}
 <!-- 답변 수정-->
+<style>
+    .container{
+        position: relative;
+        display: flex;
+        margin-left: 1vw;
+        margin-top:4.5%;
+    }
+</style>
 
-<div class="container my-3">
+<div class="container">
     <form method="post">
         {% csrf_token %}
         {% include "form_errors.html" %}

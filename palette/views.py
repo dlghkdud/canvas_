@@ -14,6 +14,9 @@ def index(request):
     context = {'drawing_list': drawing_list}
     return render(request, 'palette/drawing_list.html', context)
 
+def start(request):
+    return render(request, 'palette/start.html')
+
 def detail(request, drawing_id):
     drawing = get_object_or_404(Drawing, pk=drawing_id)
     context = {'drawing': drawing}
@@ -140,6 +143,7 @@ def file_download(request, id):
             response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
             return response
     raise Http404
+
 
 
 # https://eveningdev.tistory.com/47
